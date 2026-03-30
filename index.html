@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pre-Final Project</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <style>
+        :root { 
+            --sidebar-bg: #ffffff; 
+            --bg-body: #f8fafc;
+            --text-main: #1e293b; 
+            --text-muted: #64748b;
+            --accent: #4f46e5; 
+            --accent-hover: #4338ca;
+            --card-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.04), 0 4px 6px -2px rgba(0, 0, 0, 0.02);
+        }
+
+        body { 
+            font-family: 'Plus Jakarta Sans', sans-serif; 
+            background-color: var(--bg-body); 
+            color: var(--text-main); 
+            margin: 0;
+        }
+        
+        /* Sidebar Styling */
+        .sidebar { 
+            width: 280px; 
+            height: 100vh; 
+            position: fixed; 
+            background: var(--sidebar-bg); 
+            border-right: 1px solid #e2e8f0;
+            padding: 2.5rem 1.5rem; 
+            display: flex; 
+            flex-direction: column; 
+        }
+
+        .sidebar h4 {
+            font-weight: 700;
+            color: var(--text-main);
+            font-size: 1.2rem;
+            letter-spacing: -0.5px;
+            padding-left: 1rem;
+        }
+
+        .nav-link { 
+            color: var(--text-muted); 
+            font-weight: 500; 
+            padding: 0.85rem 1rem;
+            margin-bottom: 0.4rem; 
+            border-radius: 10px; 
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .nav-link i {
+            font-size: 1.1rem;
+            width: 20px;
+        }
+
+        .nav-link:hover { 
+            background-color: #f1f5f9; 
+            color: var(--text-main) !important; 
+            transform: translateX(4px);
+        }
+
+        .nav-link.active { 
+            background-color: #eef2ff; 
+            color: var(--accent) !important; 
+            font-weight: 600;
+        }
+
+        /* Main Content */
+        .main-content { 
+            margin-left: 280px; 
+            padding: 4rem; 
+            max-width: 1100px;
+        }
+
+        .card { 
+            border: none; 
+            border-radius: 20px; 
+            padding: 2.5rem;
+            background: #ffffff;
+            box-shadow: var(--card-shadow);
+            margin-bottom: 2rem;
+        }
+
+        h1 { 
+            font-weight: 700; 
+            font-size: 2.2rem; 
+            color: #0f172a;
+            letter-spacing: -1px;
+        }
+
+        .welcome-section p {
+            font-size: 1.1rem;
+        }
+
+        /* Project Info Styling */
+        .project-header {
+            border-left: 4px solid var(--accent);
+            padding-left: 1.5rem;
+        }
+
+        .label-text {
+            text-transform: uppercase;
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            color: var(--accent);
+        }
+
+        .info-group {
+            background: #f8fafc;
+            padding: 1.5rem;
+            border-radius: 12px;
+            height: 100%;
+        }
+
+        .info-label {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .info-value {
+            font-weight: 700;
+            color: var(--text-main);
+            margin: 0;
+        }
+
+        hr {
+            border-top: 1px solid #e2e8f0;
+            opacity: 1;
+            margin: 2.5rem 0;
+        }
+
+    </style>
+</head>
+<body>
+
+    <nav class="sidebar">
+        <h4 class="mb-5 px-2">Pre-Final Projects</h4>
+        <div class="nav flex-column">
+            <a href="index.html" class="nav-link active"><i class="fa-solid fa-house"></i> Dashboard</a>
+            <a href="calculator.html" class="nav-link"><i class="fa-solid fa-calculator"></i> Calculator</a>
+            <a href="contactlist.html" class="nav-link"><i class="fa-solid fa-address-book"></i> Contact List</a>
+            <a href="helloworld.html" class="nav-link"><i class="fa-solid fa-globe"></i> Hello World</a>
+            <a href="statemanagement.html" class="nav-link"><i class="fa-solid fa-database"></i> State Manager</a>
+            <a href="modifycontent.html" class="nav-link"><i class="fa-solid fa-pen-to-square"></i> Content Modifier</a>
+            <a href="routesexample.html" class="nav-link"><i class="fa-solid fa-route"></i> Routing Demo</a>
+        </div>
+    </nav>
+
+    <main class="main-content">
+        <div class="card welcome-section">
+            <h1>Welcome to my Pre-Final Project</h1>
+            <p class="text-secondary mb-0">Select a project from the sidebar to begin.</p>
+        </div>
+
+        <div class="card">
+            <div class="card-body p-0">
+                <div class="project-header mb-4">
+                    <p class="label-text mb-1">Pre-Final Project</p>
+                    <h3 class="fw-bold text-dark m-0">Pre-Final Project in Advanced Web Programming</h3>
+                </div>
+                
+                <hr>
+                
+                <div class="row g-4">
+                    <div class="col-md-6">
+                        <div class="info-group">
+                            <p class="info-label">Name</p>
+                            <h5 class="info-value">Neil Marc M. Arcuna</h5>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="info-group">
+                            <p class="info-label">Year and Course</p>
+                            <h5 class="info-value">4th Year - BSCpE</h5>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+</body>
+</html>

@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>React Counter App</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+    <style>
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #f1f5f9;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .counter-card {
+            background: white;
+            padding: 3rem;
+            border-radius: 24px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            width: 320px;
+        }
+
+        .count-display {
+            font-size: 4rem;
+            font-weight: 700;
+            margin: 1rem 0;
+            transition: color 0.3s ease;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+        }
+
+        button {
+            padding: 10px 16px;
+            border-radius: 12px;
+            border: none;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .btn-inc { background: #4f46e5; color: white; }
+        .btn-dec { background: #e2e8f0; color: #475569; }
+        .btn-res { background: #fee2e2; color: #ef4444; }
+
+        button:hover { transform: translateY(-2px); opacity: 0.9; }
+    </style>
+</head>
+<body>
+    <div id="app"></div>
+
+    <script type="text/babel">
+        const { useState } = React;
+
+        const CounterApp = () => {
+            const [count, setCount] = useState(0);
+
+            // Dynamic color based on value
+            const getCountColor = () => {
+                if (count > 0) return '#10b981'; // Green
+                if (count < 0) return '#ef4444'; // Red
+                return '#1e293b'; // Default Slate
+            };
+
+            return (
+                <div className="counter-card">
+                    <span style={{color: '#64748b', textTransform: 'uppercase', fontSize: '0.8rem', letterSpacing: '1px'}}>Current Count</span>
+                    <h1 className="count-display" style={{color: getCountColor()}}>{count}</h1>
+                    
+                    <div className="btn-group">
+                        <button className="btn-dec" onClick={() => setCount(count - 1)}>
+                            <i className="fa-solid fa-minus"></i>
+                        </button>
+                        <button className="btn-inc" onClick={() => setCount(count + 1)}>
+                            <i className="fa-solid fa-plus"></i>
+                        </button>
+                        <button className="btn-res" onClick={() => setCount(0)}>
+                            <i className="fa-solid fa-rotate-left"></i>
+                        </button>
+                    </div>
+                </div>
+            );
+        };
+
+        ReactDOM.createRoot(document.getElementById("app")).render(<CounterApp />);
+    </script>
+</body>
+</html>

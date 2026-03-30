@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>useRef & useEffect Demo</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+    
+    <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+    <style>
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #f1f5f9;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .card {
+            background: white;
+            padding: 3rem;
+            border-radius: 24px;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            border: 1px solid #e2e8f0;
+        }
+
+        .target-text {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #4f46e5;
+            padding: 1rem;
+            background: #eef2ff;
+            border-radius: 12px;
+            transition: all 0.5s ease;
+        }
+
+        .badge {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #64748b;
+            margin-bottom: 1rem;
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <div id="app"></div>
+
+    <script type="text/babel">
+        const { useRef, useEffect } = React;
+
+        const App = () => {
+            const paraRef = useRef(null);
+
+            useEffect(() => {
+                // Pinapaganda natin ang transition effect
+                const timer = setTimeout(() => {
+                    if (paraRef.current) {
+                        paraRef.current.innerText = "Text has been updated via useRef!";
+                        paraRef.current.style.color = "#10b981"; // Magiging green pagka-update
+                        paraRef.current.style.backgroundColor = "#dcfce7";
+                    }
+                }, 1500); // May konting delay para makita ang pagbabago
+
+                return () => clearTimeout(timer);
+            }, []);
+
+            return (
+                <div className="card">
+                    <span className="badge"></span>
+                    <p className="target-text" ref={paraRef}>
+                        Waiting for update...
+                    </p>
+                </div>
+            );
+        };
+
+        ReactDOM.createRoot(document.getElementById("app")).render(<App />);
+    </script>
+</body>
+</html>

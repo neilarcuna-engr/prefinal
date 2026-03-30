@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact List</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <script src='https://unpkg.com/react@18/umd/react.production.min.js'></script>
+    <script src='https://unpkg.com/react-dom@18/umd/react-dom.production.min.js'></script>
+    <script src='https://unpkg.com/react-router-dom@5.3.4/umd/react-router-dom.min.js'></script>
+    <script src='https://unpkg.com/@babel/standalone/babel.min.js'></script>
+
+    <style>
+        :root {
+            --primary: #4f46e5;
+            --primary-hover: #4338ca;
+            --bg-body: #f8fafc;
+            --card-border: #e2e8f0;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: var(--bg-body);
+            color: #1e293b;
+            margin: 0;
+            padding-top: 100px; /* Space para sa navbar */
+        }
+
+        /* Fixed Back Button - Adjusted for visibility */
+        .back-nav {
+            position: fixed;
+            top: 85px; 
+            left: 20px;
+            z-index: 1050;
+        }
+        .back-btn {
+            font-weight: 700;
+            color: #64748b;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 18px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
+            border: 1px solid var(--card-border);
+            transition: 0.3s;
+        }
+        .back-btn:hover {
+            color: var(--primary);
+            transform: translateX(-3px);
+            box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1);
+        }
+
+        /* Modern Navbar */
+        .navbar-custom {
+            background: rgba(255, 255, 255, 0.8) !important;
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--card-border);
+            z-index: 1040;
+        }
+
+        /* Main Container Card */
+        .app-card {
+            background: white;
+            border-radius: 24px;
+            border: 1px solid var(--card-border);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.05);
+            padding: 2.5rem;
+            margin-bottom: 4rem;
+        }
+
+        /* Form Controls */
+        .form-label {
+            font-weight: 600;
+            font-size: 0.85rem;
+            color: #64748b;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .form-control {
+            border-radius: 12px;
+            padding: 12px 16px;
+            border: 1px solid var(--card-border);
+            background-color: #fcfdfe;
+        }
+        .form-control:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.1);
+        }
+
+        .btn-save {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 14px;
+            border-radius: 12px;
+            font-weight: 700;
+            transition: 0.3s;
+        }
+        .btn-save:hover {
+            background: var(--primary-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgba(79, 70, 229, 0.3);
+        }
+
+        /* Table Styling */
+        .table thead th {
+            background: #f8fafc;
+            color: #64748b;
+            font-weight: 600;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            padding: 1rem;
+            border: none;
+        }
+        .table tbody td {
+            padding: 1.25rem 1rem;
+            border-bottom: 1px solid #f1f5f9;
+            vertical-align: middle;
+        }
+
+        .btn-delete {
+            background: #fff1f2;
+            color: #ef4444;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 10px;
+            font-weight: 600;
+            transition: 0.2s;
+        }
+        .btn-delete:hover {
+            background: #ef4444;
+            color: white;
+        }
+
+        .badge-note {
+            background: #f1f5f9;
+            color: #475569;
+            font-weight: 400;
+            white-space: normal;
+            text-align: left;
+        }
+    </style>
+</head>
+<body>
+
+
+
+    <nav class="navbar navbar-expand navbar-custom fixed-top py-3">
+        <div class="container">
+            <span class="navbar-brand fw-bold text-dark fs-4">
+                <i class="fa-solid fa-address-book text-primary me-2"></i>
+                Contact Manager
+            </span>
+            <div class="navbar-nav ms-auto">
+                <a class="nav-link px-3" href="#/">Home</a>
+                <a class="nav-link px-3 fw-bold text-primary" href="#/contacts">Contact List</a>
+            </div>
+        </div>
+    </nav>
+
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { HashRouter, Switch, Route, Link } = ReactRouterDOM;
+        const { useState, useEffect } = React;
+
+        const ContactList = () => {
+            const [contacts, setContacts] = useState([]);
+            const [name, setName] = useState("");
+            const [phone, setPhone] = useState("");
+            const [address, setAddress] = useState("");
+            const [notes, setNotes] = useState("");
+
+            useEffect(() => {
+                const saved = JSON.parse(localStorage.getItem("contacts_pro")) || [];
+                setContacts(saved);
+            }, []);
+
+            useEffect(() => {
+                localStorage.setItem("contacts_pro", JSON.stringify(contacts));
+            }, [contacts]);
+
+            const addContact = () => {
+                if (!name.trim() || !phone.trim()) {
+                    alert("Name and Phone are required.");
+                    return;
+                }
+                setContacts([...contacts, { name, phone, address, notes }]);
+                setName(""); setPhone(""); setAddress(""); setNotes("");
+            };
+
+            const deleteContact = (index) => {
+                setContacts(contacts.filter((_, i) => i !== index));
+            };
+
+            return (
+                <div className="app-card">
+                    <h4 className="fw-bold mb-4">Create New Contact</h4>
+                    <div className="row g-3">
+                        <div className="col-md-6">
+                            <label className="form-label">Full Name</label>
+                            <input type="text" className="form-control" placeholder="Full Name" value={name} onChange={e => setName(e.target.value)} />
+                        </div>
+                        <div className="col-md-6">
+                            <label className="form-label">Phone Number</label>
+                            <input type="tel" className="form-control" placeholder="+63 " value={phone} onChange={e => setPhone(e.target.value)} />
+                        </div>
+                        <div className="col-12">
+                            <label className="form-label">Mailing Address</label>
+                            <input type="text" className="form-control" placeholder="House No., Street, City, Province" value={address} onChange={e => setAddress(e.target.value)} />
+                        </div>
+                        <div className="col-12">
+                            <label className="form-label">Additional Notes</label>
+                            <textarea className="form-control" rows="2" placeholder="Relevant information about this contact..." value={notes} onChange={e => setNotes(e.target.value)}></textarea>
+                        </div>
+                        <div className="col-12">
+                            <button className="btn-save w-100" onClick={addContact}>
+                                <i className="fa-solid fa-user-plus me-2"></i> Save Contact
+                            </button>
+                        </div>
+                    </div>
+
+                    <hr className="my-5 opacity-50" />
+
+                    <h4 className="fw-bold mb-4">Save</h4>
+                    <div className="table-responsive">
+                        <table className="table">
+                            <thead>
+                                <tr>
+                                    <th>Full Name</th>
+                                    <th>Contact Info</th>
+                                    <th>Location</th>
+                                    <th width="25%">Notes</th>
+                                    <th className="text-end">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {contacts.length > 0 ? contacts.map((c, i) => (
+                                    <tr key={i}>
+                                        <td className="fw-bold">{c.name}</td>
+                                        <td>
+                                            <div className="small text-muted"><i className="fa-solid fa-phone me-1"></i> {c.phone}</div>
+                                        </td>
+                                        <td>
+                                            <div className="small">{c.address || "---"}</div>
+                                        </td>
+                                        <td>
+                                            {c.notes ? <div className="badge badge-note p-2 rounded">{c.notes}</div> : "---"}
+                                        </td>
+                                        <td className="text-end">
+                                            <button className="btn-delete" onClick={() => deleteContact(i)}>
+                                                <i className="fa-solid fa-trash-can"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                )) : (
+                                    <tr>
+                                        <td colSpan="5" className="text-center py-5 text-muted">
+                                            <i className="fa-solid fa-folder-open fa-2x mb-2 d-block"></i>
+                                            No records found.
+                                        </td>
+                                    </tr>
+                                )}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            );
+        };
+
+        const App = () => (
+            <HashRouter>
+                <div className="container" style={{maxWidth: '1000px'}}>
+                    <Switch>
+                        <Route exact path="/" render={() => (
+                            <div className="app-card text-center py-5">
+                                <i className="fa-solid fa-shield-halved fa-4x text-primary mb-4"></i>
+                                <h2 className="fw-bold">Contact List</h2>
+                                <p className="text-muted mb-4"></p>
+                                <Link to="/contacts" className="btn-save px-5 text-decoration-none">Open Contact List</Link>
+                            </div>
+                        )} />
+                        <Route path="/contacts" component={ContactList} />
+                    </Switch>
+                </div>
+            </HashRouter>
+        );
+
+        ReactDOM.createRoot(document.getElementById("root")).render(<App />);
+    </script>
+</body>
+</html> 

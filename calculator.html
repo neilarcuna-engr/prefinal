@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculator</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+    <style>
+        :root { 
+            --bg-body: #f1f5f9;
+            --accent: #4f46e5; 
+            --card-bg: #ffffff;
+        }
+
+        body { 
+            font-family: 'Plus Jakarta Sans', sans-serif; 
+            background-color: var(--bg-body); 
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0;
+            position: relative; /* Para sa absolute positioning ng back button */
+        }
+
+        /* Pinakataas Left Side Back Button */
+        .back-nav {
+            position: absolute;
+            top: 25px;
+            left: 25px;
+            z-index: 10;
+        }
+
+        .back-btn {
+            font-weight: 700;
+            color: #64748b;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            transition: all 0.3s ease;
+            padding: 10px 18px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
+        }
+
+        .back-btn:hover {
+            color: var(--accent);
+            transform: translateX(-5px);
+            box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1);
+        }
+
+        .calc-container {
+            width: 100%;
+            max-width: 400px;
+            padding: 20px;
+        }
+
+        .calc-card {
+            background: var(--card-bg);
+            border-radius: 40px;
+            box-shadow: 0 40px 100px -20px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+        }
+
+        .display-screen {
+            background: #f8fafc;
+            color: #1e293b;
+            font-size: 3.5rem;
+            font-weight: 300;
+            text-align: right;
+            padding: 30px 20px;
+            border-radius: 25px;
+            margin-bottom: 30px;
+            min-height: 140px;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            word-break: break-all;
+            letter-spacing: -2px;
+        }
+
+        .display-label {
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: #94a3b8;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 5px;
+        }
+
+        .btn-calc {
+            height: 72px;
+            border-radius: 20px;
+            border: none;
+            font-size: 1.4rem;
+            font-weight: 600;
+            transition: all 0.2s;
+            background: #ffffff;
+            color: #475569;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            border: 1px solid #f1f5f9;
+        }
+
+        .btn-calc:hover {
+            background-color: #f8fafc;
+            transform: translateY(-3px);
+            color: var(--accent);
+        }
+
+        .btn-operator { background: #f5f3ff; color: var(--accent); }
+        .btn-clear { background: #fff1f2; color: #e11d48; }
+
+        .btn-equals {
+            background: var(--accent);
+            color: #ffffff;
+            box-shadow: 0 20px 25px -5px rgba(79, 70, 229, 0.4);
+            font-weight: 700;
+        }
+
+        .btn-equals:hover {
+            background: #4338ca;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+
+    
+
+    <div class="calc-container">
+        <div id="root"></div>
+    </div>
+
+    <script type="text/babel">
+        const { useState } = React;
+
+        const App = () => {
+            const [input, setInput] = useState("");
+
+            const solve = () => {
+                try {
+                    const result = Function('"use strict";return (' + input + ')')();
+                    setInput(result.toString());
+                } catch {
+                    setInput("Error");
+                }
+            };
+
+            const keys = [
+                { val: "C", type: "clear" }, { val: "/", type: "operator" }, { val: "*", type: "operator" }, { val: "-", type: "operator" },
+                { val: "7", type: "num" }, { val: "8", type: "num" }, { val: "9", type: "num" }, { val: "+", type: "operator" },
+                { val: "4", type: "num" }, { val: "5", type: "num" }, { val: "6", type: "num" }, { val: ".", type: "num" },
+                { val: "1", type: "num" }, { val: "2", type: "num" }, { val: "3", type: "num" }, { val: "0", type: "num" }
+            ];
+
+            const handlePress = (v) => {
+                if (v === "C") setInput("");
+                else setInput(input + v);
+            };
+
+            return (
+                <div className="calc-card">
+                    <div className="display-screen">
+                        <div className="display-label">Calculator</div>
+                        {input || "0"}
+                    </div>
+                    
+                    <div className="row g-3">
+                        {keys.map((k, index) => (
+                            <div className="col-3" key={index}>
+                                <button 
+                                    className={`btn btn-calc w-100 ${
+                                        k.type === 'operator' ? 'btn-operator' : 
+                                        k.type === 'clear' ? 'btn-clear' : ''
+                                    }`} 
+                                    onClick={() => handlePress(k.val)}
+                                >
+                                    {k.val === "*" ? "×" : k.val === "/" ? "÷" : k.val}
+                                </button>
+                            </div>
+                        ))}
+                        <div className="col-12 mt-3">
+                            <button className="btn btn-calc btn-equals w-100" onClick={solve}>
+                                =
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            );
+        };
+
+        const root = ReactDOM.createRoot(document.getElementById("root"));
+        root.render(<App />);
+    </script>
+</body>
+</html>
